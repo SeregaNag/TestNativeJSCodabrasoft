@@ -72,7 +72,6 @@ registrationForm.addEventListener("submit", (event) => {
     }),
   })
     .then((response) => {
-      
       if (response.ok) {
         alert("Регистрация прошла успешно!");
         registrationForm.reset();
