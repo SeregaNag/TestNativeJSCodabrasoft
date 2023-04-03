@@ -1,4 +1,6 @@
 const registrationForm = document.querySelector("#registration-form");
+const submitButton = document.querySelector("#submit-button");
+const messageDiv = document.querySelector("#message");
 
 registrationForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -9,6 +11,8 @@ registrationForm.addEventListener("submit", (event) => {
   const email = document.querySelector("#email").value;
   const password = document.querySelector("#password").value;
   const confirmPassword = document.querySelector("#confirm-password").value;
+  
+  messageDiv.classList.remove("message-success");
 
   if (
     firstName === "" ||
@@ -18,27 +22,27 @@ registrationForm.addEventListener("submit", (event) => {
     password === "" ||
     confirmPassword === ""
   ) {
-    alert("Все поля должны быть заполнены!");
+    messageDiv.textContent = "Все поля должны быть заполнены!";
     return;
   }
 
   if (firstName.length < 2 || firstName.length > 25) {
-    alert("Имя должно содержать от 2 до 25 символов!");
+    messageDiv.textContent = "Имя должно содержать от 2 до 25 символов!";
     return;
   }
 
   if (lastName.length < 2 || lastName.length > 25) {
-    alert("Фамилия должна содержать от 2 до 25 символов!");
+    messageDiv.textContent = "Фамилия должно содержать от 2 до 25 символов!";
     return;
   }
 
   if (new Date(birthdate) > new Date()) {
-    alert("Дата рождения указана неверно!");
+    messageDiv.textContent = "Дата рождения указана неверно!";
     return;
   }
 
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    alert("Введите валидный email!");
+    messageDiv.textContent = "Введите валидный email!";
     return;
   }
 
@@ -47,14 +51,13 @@ registrationForm.addEventListener("submit", (event) => {
       password
     )
   ) {
-    alert(
-      "Пароль должен содержать минимум 8 символов, минимум 1 символ в верхнем регистре, минимум одна цифра 1-9, минимум 1 специальный символ из перечисленных !@#$%"
-    );
+    messageDiv.textContent =
+      "Пароль должен содержать минимум 8 символов, минимум 1 символ в верхнем регистре, минимум одна цифра 1-9, минимум 1 специальный символ из перечисленных !@#$%";
     return;
   }
 
   if (password !== confirmPassword) {
-    alert("Подтверждение пароля не совпадает с паролем!");
+    messageDiv.textContent = "Подтверждение пароля не совпадает с паролем!";
     return;
   }
 
@@ -73,7 +76,10 @@ registrationForm.addEventListener("submit", (event) => {
   })
     .then((response) => {
       if (response.ok) {
-        alert("Регистрация прошла успешно!");
+        messageDiv.textContent = "Регистрация прошла успешно!";
+        if (messageDiv.textContent === "Регистрация прошла успешно!") {
+          messageDiv.classList.add("message-success");
+        }
         registrationForm.reset();
         console.log(response.clone().text());
       } else {
